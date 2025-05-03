@@ -1,11 +1,14 @@
 <script setup>
 import { onMounted } from 'vue'
 import { gsap } from 'gsap'
-import first from '../assets/first.jpg'
-import second from '../assets/second.jpg'
+import nos1 from '../assets/nos1.jpg'
+import nos2 from '../assets/nos2.jpg'
+import nos3 from '../assets/nos3.jpg'
+import nos4 from '../assets/nos4.jpg'
+import nos5 from '../assets/nos5.jpg'
+import emblaCarouselVue from 'embla-carousel-vue'
 
-let imageUrl = first
-let imageUrl2 = second
+const [emblaRef] = emblaCarouselVue()
 
 onMounted(() => {
   gsap.registerPlugin(Observer);
@@ -67,7 +70,7 @@ onMounted(() => {
     wheelSpeed: -1,
     onDown: () => !animating && gotoSection(currentIndex - 1, -1),
     onUp: () => !animating && gotoSection(currentIndex + 1, 1),
-    tolerance: 10,
+    tolerance: 100,
     preventDefault: true
   });
 
@@ -86,7 +89,43 @@ onMounted(() => {
       <div class="outer">
         <div class="inner">
           <div class="bg one">
-            <h2 class="section-heading">Scroll down</h2>
+            <div class="flex flex-col justify-items-center items-center gap-5">
+              <h2 class="section-heading">Scroll down</h2>
+              <div class="embla" ref="emblaRef">
+                <div class="embla__container">
+                  <div class="embla__slide ourPicContainer">
+                    <div class="ourPic">
+                      <!-- <img src="../assets/nos1.jpg"> -->
+                      <div class="igm bg-center" :style=" { backgroundImage: `url(${nos1})`}"></div>
+                    </div>
+                  </div>
+                  <div class="embla__slide ourPicContainer">
+                    <div class="ourPic">
+                      <!-- <img src="../assets/nos2.jpg"> -->
+                      <div class="igm bg-center" :style=" { backgroundImage: `url(${nos2})`}"></div>
+                    </div>
+                  </div>
+                  <div class="embla__slide ourPicContainer">
+                    <div class="ourPic">
+                      <!-- <img src="../assets/nos3.jpg"> -->
+                      <div class="igm bg-bottom" :style=" { backgroundImage: `url(${nos3})`}"></div>
+                    </div>
+                  </div>
+                  <div class="embla__slide ourPicContainer">
+                    <div class="ourPic">
+                      <!-- <img src="../assets/nos4.jpg"> -->
+                      <div class="igm bg-center" :style=" { backgroundImage: `url(${nos4})`}"></div>
+                    </div>
+                  </div>
+                  <div class="embla__slide ourPicContainer">
+                    <div class="ourPic">
+                      <!-- <img src="../assets/nos5.jpg"> -->
+                      <div class="igm bg-center" :style=" { backgroundImage: `url(${nos5})`}"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -95,7 +134,41 @@ onMounted(() => {
       <div class="outer">
         <div class="inner">
           <div class="bg">
-            <h2 class="section-heading">Animated with GSAP</h2>
+            <h2 class="section-heading">Scroll down</h2>
+            <div class="embla" ref="emblaRef">
+              <div class="embla__container">
+                <div class="embla__slide ourPicContainer">
+                  <div class="ourPic">
+                    <!-- <img src="../assets/nos1.jpg"> -->
+                    <div class="igm bg-center" :style=" { backgroundImage: `url(${nos1})`}"></div>
+                  </div>
+                </div>
+                <div class="embla__slide ourPicContainer">
+                  <div class="ourPic">
+                    <!-- <img src="../assets/nos2.jpg"> -->
+                    <div class="igm bg-center" :style=" { backgroundImage: `url(${nos2})`}"></div>
+                  </div>
+                </div>
+                <div class="embla__slide ourPicContainer">
+                  <div class="ourPic">
+                    <!-- <img src="../assets/nos3.jpg"> -->
+                    <div class="igm bg-bottom" :style=" { backgroundImage: `url(${nos3})`}"></div>
+                  </div>
+                </div>
+                <div class="embla__slide ourPicContainer">
+                  <div class="ourPic">
+                    <!-- <img src="../assets/nos4.jpg"> -->
+                    <div class="igm bg-center" :style=" { backgroundImage: `url(${nos4})`}"></div>
+                  </div>
+                </div>
+                <div class="embla__slide ourPicContainer">
+                  <div class="ourPic">
+                    <!-- <img src="../assets/nos5.jpg"> -->
+                    <div class="igm bg-center" :style=" { backgroundImage: `url(${nos5})`}"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -113,7 +186,9 @@ onMounted(() => {
       <div class="outer">
         <div class="inner">
           <div class="bg">
-            <h2 class="section-heading">Animation platform</h2>
+            <h2 class="section-heading">
+              asd
+            </h2>
           </div>
         </div>
       </div>
@@ -134,10 +209,39 @@ onMounted(() => {
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap");
 
+.ourPic {
+  @apply rounded-2xl overflow-hidden flex items-center justify-items-center w-full h-full;
+  height: 100%;
+}
+
+.ourPicContainer {
+  @apply px-4 flex items-center justify-center w-full h-full;
+  max-height: 60vh;
+}
+
+.igm {
+  @apply w-full h-full bg-cover;
+  height: 400px;
+}
+
+
+.embla {
+  width: 100%;
+  overflow: hidden;
+}
+.embla__container {
+  display: flex;
+  width: 100%;
+}
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
 $bg-gradient: linear-gradient(
   180deg,
-  rgba(0, 0, 0, 0.6) 0%,
-  rgba(0, 0, 0, 0.3) 100%
+  rgba(0, 0, 0, 0.2) 0%,
+  rgba(0, 0, 0, 0.1) 100%
 );
 
 * {
@@ -220,10 +324,12 @@ section {
   }
 }
 
+/*https://images.unsplash.com/photo-1617478755490-e21232a5eeaf?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzU1NjM5NA&ixlib=rb-1.2.1&q=75&w=1920*/
+
 .first {
   .bg {
     background-image: $bg-gradient,
-      url(https://images.unsplash.com/photo-1617478755490-e21232a5eeaf?crop=entropy&cs=srgb&fm=jpg&ixid=MnwxNDU4OXwwfDF8cmFuZG9tfHx8fHx8fHx8MTYxNzU1NjM5NA&ixlib=rb-1.2.1&q=75&w=1920);
+      url('../assets/white_paper_texture.avif');
   }
 }
 .second {
