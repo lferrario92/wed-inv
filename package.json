@@ -13,9 +13,12 @@
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/vue-fontawesome": "^3.0.0",
+    "@primeuix/themes": "^1.1.1",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-vue": "^8.6.0",
     "gsap": "^3.12.7",
+    "primevue": "^4.3.4",
     "vue": "^3.3.4"
   },
   "devDependencies": {

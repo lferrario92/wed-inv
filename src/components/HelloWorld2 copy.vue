@@ -263,132 +263,35 @@ const openMap = () => {
               </template>
             </Timeline>
 	      	</div>
-	      	<div class="bg-white text-black w-full leading-none py-8 px-4">
-            <div class="max-w-md mx-auto text-center">
-              <div class="mb-6">
-                <span class="inline-block w-16 h-px bg-gray-300 mb-2"></span>
-                <h2 class="text-2xl font-serif tracking-wider">Dress Code</h2>
-                <span class="inline-block w-16 h-px bg-gray-300 mt-2"></span>
-              </div>
-              
-              <div class="mb-6">
-                <p class="text-gray-700 mb-4">
-                  Para esta ocasión tan especial, les pedimos que nos acompañen con un atuendo
-                  <span class="font-semibold">elegante</span> que refleje la importancia de este día.
-                </p>
-                
-                <div class="flex justify-center gap-8 my-6">
-                  <div class="text-center">
-                    <div class="w-16 h-16 mx-auto mb-2 rounded-full bg-gray-100 flex items-center justify-center">
-                      <i class="fas fa-venus text-gray-600 text-2xl"></i>
-                    </div>
-                    <p class="text-sm text-gray-600">Vestido largo o de cóctel</p>
-                  </div>
-                  
-                  <div class="text-center">
-                    <div class="w-16 h-16 mx-auto mb-2 rounded-full bg-gray-100 flex items-center justify-center">
-                      <i class="fas fa-mars text-gray-600 text-2xl"></i>
-                    </div>
-                    <p class="text-sm text-gray-600">Traje y corbata</p>
-                  </div>
-                </div>
-                
-                <p class="text-sm text-gray-500 italic">
-                  * Evitar colores blanco y marfil
-                </p>
-              </div>
-              
-              <div class="border-t border-gray-100 pt-6">
-                <p class="text-sm text-gray-600">
-                  Su elegancia complementará la belleza de este día inolvidable.
-                </p>
-              </div>
-            </div>
+	      	<div class="bg-white text-black w-full leading-none py-5">
+            dress code
           </div>
-          <div class="chosenBG w-full leading-none py-8 px-4">
-            <div class="max-w-md mx-auto text-center">
-              <div class="mb-6">
-                <span class="inline-block w-16 h-px bg-gray-300 mb-2"></span>
-                <h2 class="text-2xl font-serif tracking-wider">Regalos</h2>
-                <span class="inline-block w-16 h-px bg-gray-300 mt-2"></span>
-              </div>
-              
-              <div class="mb-6">
-                <p class="text-gray-700 mb-6">
-                  Su presencia es nuestro mejor regalo, pero si desean hacernos un obsequio, 
-                  agradeceremos su aporte para nuestro viaje de luna de miel.
-                </p>
-                
-                <div ref="giftIcon" class="w-24 h-24 mx-auto mb-6 rounded-full bg-white bg-opacity-80 flex items-center justify-center">
-                  <i class="fas fa-gift text-4xl text-white"></i>
-                </div>
-                
-                <div class="bg-white bg-opacity-80 rounded-lg p-4 mb-4">
-                  <p class="text-gray-700 font-medium mb-2">Datos para transferencia:</p>
-                  <p class="text-sm text-gray-600 mb-1">Banco: [Nombre del Banco]</p>
-                  <p class="text-sm text-gray-600">CBU: [Número de CBU]</p>
-                  <p class="text-sm text-gray-600">A nombre de: [Nombre]</p>
-                </div>
-                
-                <p class="text-sm text-gray-500 italic">
-                  * Muchas gracias por acompañarnos en este día tan especial
-                </p>
-              </div>
-            </div>
+          <div class="chosenBG w-full leading-none py-5">
+            regalito
           </div>
         </div>
       </section>
-      
-      <section class="mt-2">
-        <div class="test">
-          <div class="bg-white w-full leading-none py-8 px-4">
-            <div class="max-w-md mx-auto text-center">
-              <div class="mb-6">
-                <span class="inline-block w-16 h-px bg-gray-300 mb-2"></span>
-                <h2 class="text-2xl font-serif tracking-wider text-black">Confirmar Asistencia</h2>
-                <span class="inline-block w-16 h-px bg-gray-300 mt-2"></span>
-              </div>
-              
-              <div class="mb-6">
-                <p class="text-gray-700 mb-6">
-                  Por favor, confirma tu asistencia antes del 1 de Febrero de 2026
-                </p>
-                
-                <p class="text-sm text-gray-600 mb-6">
-                  <span class="block text-lg font-medium mb-1">Invitados confirmados</span>
-                  <span class="text-4xl font-serif">2</span>
-                  <span class="block text-sm text-gray-500 mt-1">de 2</span>
-                </p>
-                
-                <a 
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSfNTdNtGRQsxV96JBtiyA3JJ59cenb0G17LAu4LQtn3oJTcUA/viewform?usp=header" 
-                  target="_blank"
-                  class="inline-block bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition-colors duration-300 font-medium"
-                >
-                  Confirmar Asistencia
-                </a>
-                
-                <p class="text-sm text-gray-500 mt-6">
-                  ¿Tienes alguna pregunta?<br>
-                  <a href="mailto:renataylucas@boda.com" class="text-gray-700 underline">renataylucas@boda.com</a>
-                </p>
-              </div>
-            </div>
+	    <section class="">
+	      <div class="test">
+	      	
+			  </div>
+	    </section>
+	    <section class="mt-2">
+	      <div class="test">
+	      	<div class="bg-slate-500 w-full leading-none py-5">
+            confirmar asistencia
           </div>
         </div>
       </section>
-    </div>
-    
-    <div class="image-container">
-      <img class="mask" src="../assets/test_mask_svg.svg" alt="image">
-    </div>
-    
-    <div class="goDown">
-      👇
-    </div>
-    
+	  </div>
+	  <div class="image-container">
+	    <img class="mask" src="../assets/test_mask_svg.svg" alt="image">
+	  </div>
+	  <div class="goDown">
+	  	👇
+	  </div>
     <img class="paper" src="../assets/white_paper_texture.jpg" alt="image">
-  </div>
+	</div>
 </template>
 
 <style scoped>
@@ -436,12 +339,13 @@ body {
 }
 
 .intro h1 {
-  font-size: 20px;
-  font-family: "Lora";
+  font-size: 40px;
+  font-family: "Beth Ellen", cursive;
 }
 .intro p  {
   font-size: 60px;
-  font-family: "Great Vibes";
+  font-family: "Beth Ellen", system-ui;
+  font-weight: bolder;
 }
 
 .content {
@@ -456,13 +360,13 @@ body {
   height: 30vh !important;
 }
 .content .section.hero {
-  /* background-image: url('../assets/second.jpg'); */
-  background-image: url('../assets/test.jpg');
+  background-image: url('../assets/second.jpg');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
   transition: opacity 0.5s ease;
 }
+
 
 .image-container {
   width: 100%;
@@ -505,31 +409,18 @@ body {
 
 
 .ourPic {
-  border-radius: 1rem;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  width: 100%;
+  @apply rounded-2xl overflow-hidden flex items-center justify-items-center w-full h-full;
   height: 100%;
 }
 
 .ourPicContainer {
-  padding: 0 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+  @apply px-4 flex items-center justify-center w-full h-full;
   max-height: 60vh;
 }
 
 .igm {
-  width: 100%;
+  @apply w-full h-full bg-cover;
   height: 400px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 

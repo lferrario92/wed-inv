@@ -37,7 +37,7 @@ a:hover {
 }
 
 body {
-  background-image: url('assets/white_paper_texture.jpg');
+  /* background-image: url('assets/white_paper_texture.jpg'); */
   margin: 0;
   display: flex;
   place-items: center;
