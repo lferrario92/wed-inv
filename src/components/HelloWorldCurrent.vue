@@ -4,10 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import emblaCarouselVue from 'embla-carousel-vue'
 import Autoplay from 'embla-carousel-autoplay'
 
-import Timeline from 'primevue/timeline';
 import { ref } from 'vue'
-import { Button } from 'primevue'
-import TestData from './testData.vue';
+import TestData2 from './TestData2.vue';
 
 const [emblaRef] = emblaCarouselVue({ loop: true }, [Autoplay()])
 gsap.registerPlugin(ScrollTrigger);
@@ -159,7 +157,7 @@ const openMap = () => {
             <div class="border-t border-black"></div>
           </div>
           <div class="bg-white text-black w-full leading-none py-10">
-            <TestData />
+            <TestData2 />
           </div>
           <div class="bg-white w-full leading-none px-4">
             <div class="border-t border-black"></div>
