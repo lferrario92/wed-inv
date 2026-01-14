@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router';
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen">
     <!-- Navigation -->
     <nav class="bg-white shadow-sm" v-if="false">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -56,7 +56,7 @@ import { RouterLink, RouterView } from 'vue-router';
     </nav>
 
     <!-- Main content -->
-    <main class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <main class="max-w-7xl mx-auto ">
       <RouterView />
     </main>
   </div>
@@ -83,5 +83,31 @@ html {
 .mobile-menu-leave-to {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+
+.chosenBG {
+  @apply bg-rose-50 text-rose-900;
+}
+
+
+.chosenText {
+  @apply text-rose-900;
+}
+
+.chosenBG p {
+  @apply text-rose-900;
+}
+
+.chosenBG-over {
+  @apply bg-rose-200;
+}
+
+.chosenBG-over span {
+  @apply text-rose-900;
+}
+
+.liCal {
+  @apply flex flex-col items-center justify-center w-20 h-20 p-2;
 }
 </style>

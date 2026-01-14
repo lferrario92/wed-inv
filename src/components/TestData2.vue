@@ -46,15 +46,13 @@ const initializeGuestForms = (guests) => {
 const hasChanges = computed(() => {
   return guestForms.value.some(form => {
     const original = form.original;
-    return form.menu_choice !== original.menu_choice || 
-           form.is_attending !== original.is_attending ||
-           form.notes !== (original.notes || '');
+    return form.notes !== (original.notes || '');
   });
 });
 
 // Save guest updates
 const saveGuestUpdates = async () => {
-  if (!invitation.value || !hasChanges.value) return;
+  if (!invitation.value) return;
   
   try {
     saving.value = true;
@@ -63,8 +61,8 @@ const saveGuestUpdates = async () => {
     
     const updates = guestForms.value.map(form => ({
       id: form.id,
-      invitation_id: form.original.invitation_id,
-      guest_name: form.original.guest_name,
+      invitation_id: invitation.value.id,
+      guest_name: form.name,
       menu_choice: form.menu_choice,
       is_attending: form.is_attending,
       notes: form.notes || null,
@@ -97,6 +95,28 @@ const saveGuestUpdates = async () => {
     saving.value = false;
   }
 };
+
+// Watch for changes in guest attendance
+watch(() => guestForms.value.map(g => g.is_attending), (newAttendances, oldAttendances) => {
+  if (newAttendances.length === oldAttendances.length) {
+    for (let i = 0; i < newAttendances.length; i++) {
+      if (newAttendances[i] !== oldAttendances[i]) {
+        saveGuestUpdates();
+      }
+    }
+  }
+}, { deep: true });
+
+// Watch for changes in menu choice
+watch(() => guestForms.value.map(g => g.menu_choice), (newChoices, oldChoices) => {
+  if (newChoices.length === oldChoices.length) {
+    for (let i = 0; i < newChoices.length; i++) {
+      if (newChoices[i] !== oldChoices[i]) {
+        saveGuestUpdates();
+      }
+    }
+  }
+}, { deep: true });
 
 // Fetch invitation with guests by code
 const fetchInvitationByCode = async (code) => {
@@ -145,7 +165,7 @@ watch(invitationCode, async (newCode) => {
 
 <template>
   <div class="container mx-auto p-4 max-w-3xl">
-    <h1 class="text-2xl font-bold mb-6">Confirmación de asistencia</h1>
+    <h1 class="text-2xl font-bold mb-6 chosenText">Confirmación de asistencia</h1>
     
     <!-- Success message -->
     <div v-if="success" class="mt-4 p-4 bg-green-50 text-green-800 rounded-md">
@@ -182,7 +202,7 @@ watch(invitationCode, async (newCode) => {
     <!-- Invitation details -->
     <div v-if="invitation" class="bg-white p-6 rounded-lg shadow">
       <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4">Detalles de la invitación</h2>
+        <h2 class="text-xl font-semibold text-gray-900 mb-4 chosenText">Detalles de la invitación</h2>
         <p class="text-gray-600">Código de invitación: <span class="font-mono">{{ invitation.code }}</span></p>
       </div>
       
@@ -196,10 +216,17 @@ watch(invitationCode, async (newCode) => {
             <label class="flex flex-col gap-2 items-center cursor-pointer">
               <div class="relative">
                 <input type="checkbox" v-model="guest.is_attending" class="sr-only">
+                <div v-if="saving" class="absolute left-full ml-2 top-1/2 transform -translate-y-1/2">
+                  <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500"></div>
+                </div>
                 <div class="block bg-gray-300 w-14 h-8 rounded-full"></div>
                 <div 
                   class="absolute left-1 top-1 w-6 h-6 rounded-full transition transform"
-                  :class="{ 'translate-x-6 bg-green-500': guest.is_attending, 'bg-red-500': !guest.is_attending }"
+                  :class="{
+                    'translate-x-6 bg-green-500': guest.is_attending,
+                    'bg-red-500': !guest.is_attending,
+                    'bg-gray-500': saving
+                  }"
                 ></div>
               </div>
               <div class="text-gray-700 font-medium">
@@ -214,7 +241,7 @@ watch(invitationCode, async (newCode) => {
             </label>
             <select 
               v-model="guest.menu_choice" 
-              :disabled="!guest.is_attending"
+              :disabled="!guest.is_attending || saving"
               class="mt-1 block w-full pl-2 pr-2 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             >
               <option v-for="option in menuOptions" :key="option.value" :value="option.value">
@@ -234,42 +261,23 @@ watch(invitationCode, async (newCode) => {
               rows="2"
               placeholder="¿Alguna nota o pedido especial?"
             ></textarea>
-            <span v-if="hasChanges"  class="inline-flex items-center mt-2 px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-              Cambios sin guardar
-            </span>
           </div>
         </div>
         
         <!-- Submit Button -->
-        <div class="pt-4 flex justify-end">
+        <span v-if="hasChanges"  class="inline-flex items-center py-1 px-2 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+          Cambios sin guardar
+        </span>
+        <div class="pt-2 flex justify-end">
           <button
             type="submit"
             :disabled="!hasChanges || saving"
-            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed chosenBG"
           >
             {{ saving ? 'Guardando...' : 'Guardar Cambios' }}
           </button>
         </div>
       </form>
-      
-      <!-- Event Details -->
-      <div class="mt-8 pt-6 border-t border-gray-200">
-        <h3 class="text-lg font-medium text-gray-900 mb-3">Event Details</h3>
-        <div class="bg-blue-50 p-4 rounded-lg">
-          <p class="text-gray-700">
-            <span class="font-medium">Date:</span> Saturday, November 15, 2025
-          </p>
-          <p class="text-gray-700 mt-1">
-            <span class="font-medium">Time:</span> 4:00 PM
-          </p>
-          <p class="text-gray-700 mt-1">
-            <span class="font-medium">Venue:</span> The Grand Ballroom, 123 Wedding Lane, Cityville
-          </p>
-          <p class="mt-3 text-sm text-gray-600">
-            Please RSVP by October 15, 2025. We look forward to celebrating with you!
-          </p>
-        </div>
-      </div>
     </div>
     
     <!-- No code provided message -->

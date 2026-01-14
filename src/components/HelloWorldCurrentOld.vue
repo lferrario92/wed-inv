@@ -102,16 +102,10 @@ const openMap = () => {
 <template>
 	<div class="wrapper">
 	  <div class="intro">
-      <!-- <div class="flex flex-col items-center names">
+      <div class="flex flex-col items-center names">
         <p class="transform -rotate-90 mt-10">Renata & Lucas</p>
       </div>
-      <h1>Nuestra boda</h1> -->
-      <div class="relative w-full">
-        <img src="../assets/cover_names.png" alt="Wedding Names" class="w-full max-w-100">
-        <img src="../assets/trans_left.png" alt="Decorative Left" class="absolute left-0 top-10 max-w-100">
-        <img src="../assets/trans_right.png" alt="Decorative Right" class="absolute right-0 top-10 max-w-100">
-        <h1>Nuestra boda</h1>
-      </div>
+      <h1>Nuestra boda</h1>
 	  </div>
 	  <div class="content">
 	    <section class="section hero"></section>
@@ -126,19 +120,19 @@ const openMap = () => {
               Faltan...
             </p>
             <ul class="flex gap-1 items-center justify-center mw-full">
-              <li class="liCal chosenBG-over">
+              <li class="liCal">
                 <span class="text-xl" id="days"></span>
                 <span>Dias</span>
               </li>
-              <li class="liCal chosenBG-over">
+              <li class="liCal">
                 <span class="text-xl" id="hours"></span>
                 <span>Horas</span>
               </li>
-              <li class="liCal chosenBG-over">
+              <li class="liCal">
                 <span class="text-xl" id="minutes"></span>
                 <span>Minutos</span>
               </li>
-              <li class="liCal chosenBG-over">
+              <li class="liCal">
                 <span class="text-xl" id="seconds"></span>
                 <span>Segundos</span>
               </li>
@@ -146,8 +140,8 @@ const openMap = () => {
           </div>
           <div class="bg-white text-black w-full leading-none pt-10 pb-10">
             <div class="timeline-element-small flex flex-col gap-3 items-center px-4">
-              <i class="text-2xl mb-2 fas fa-calendar-days chosenText"></i>
-              <button class="w-full chosenBG" @click="addToCalendar">Agregar a tu calendario</button>
+              <i class="text-2xl mb-2 fas fa-calendar-days"></i>
+              <button class="w-full bg-black text-white" @click="addToCalendar">Agregar a tu calendario</button>
             </div>
           </div>
           <div class="bg-white w-full leading-none px-4">
@@ -155,18 +149,60 @@ const openMap = () => {
           </div>
           <div class="bg-white text-black w-full leading-none py-10">
             <div class="timeline-element-small flex flex-col gap-3 items-center px-4">
-              <i class="text-2xl mb-2 fas fa-map-marker-alt chosenText"></i>
-              <button class="w-full chosenBG" @click="openMap">Como llegar</button>
+              <i class="text-2xl mb-2 fas fa-map-marker-alt"></i>
+              <button class="w-full bg-black text-white" @click="openMap">Como llegar</button>
             </div>
           </div>
           <div class="bg-white w-full leading-none px-4">
             <div class="border-t border-black"></div>
           </div>
+          <div class="bg-white text-black w-full leading-none py-10">
+            <TestData2 />
+          </div>
           <div class="bg-white w-full leading-none px-4">
             <div class="border-t border-black"></div>
           </div>
-	      	<div class="bg-white text-black w-full leading-none py-8">
-            <img src="../assets/dresscode.png" alt="">
+	      	<div class="bg-white text-black w-full leading-none py-8 px-4">
+            <div class="max-w-md mx-auto text-center">
+              <div class="mb-6">
+                <span class="inline-block w-16 h-px bg-gray-300 mb-2"></span>
+                <h2 class="text-2xl font-serif tracking-wider">Dress Code</h2>
+                <span class="inline-block w-16 h-px bg-gray-300 mt-2"></span>
+              </div>
+              
+              <div class="mb-6">
+                <p class="text-gray-700 mb-4">
+                  Para esta ocasión tan especial, les pedimos que nos acompañen con un atuendo
+                  <span class="font-semibold">elegante</span> que refleje la importancia de este día.
+                </p>
+                
+                <div class="flex justify-center gap-8 my-6">
+                  <div class="text-center">
+                    <div class="w-16 h-16 mx-auto mb-2 rounded-full bg-gray-100 flex items-center justify-center">
+                      <i class="fas fa-venus text-gray-600 text-2xl"></i>
+                    </div>
+                    <p class="text-sm text-gray-600">Vestido largo o de cóctel</p>
+                  </div>
+                  
+                  <div class="text-center">
+                    <div class="w-16 h-16 mx-auto mb-2 rounded-full bg-gray-100 flex items-center justify-center">
+                      <i class="fas fa-mars text-gray-600 text-2xl"></i>
+                    </div>
+                    <p class="text-sm text-gray-600">Traje y corbata</p>
+                  </div>
+                </div>
+                
+                <p class="text-sm text-gray-500 italic">
+                  * Evitar colores blanco y marfil
+                </p>
+              </div>
+              
+              <div class="border-t border-gray-100 pt-6">
+                <p class="text-sm text-gray-600">
+                  Su elegancia complementará la belleza de este día inolvidable.
+                </p>
+              </div>
+            </div>
           </div>
           <div class="bg-white w-full leading-none px-4">
             <div class="border-t border-black"></div>
@@ -175,7 +211,7 @@ const openMap = () => {
             <div class="max-w-md mx-auto text-center">
               <div class="mb-6">
                 <span class="inline-block w-16 h-px bg-gray-300 mb-2"></span>
-                <h2 class="text-2xl font-serif tracking-wider chosenText">Regalos</h2>
+                <h2 class="text-2xl font-serif tracking-wider text-black">Regalos</h2>
                 <span class="inline-block w-16 h-px bg-gray-300 mt-2"></span>
               </div>
               
@@ -185,58 +221,27 @@ const openMap = () => {
                   agradeceremos su aporte para nuestro viaje de luna de miel.
                 </p>
                 
-                <div ref="giftIcon" class="w-24 h-24 mx-auto mb-6 rounded-full chosenBG flex items-center justify-center">
-                  <i class="fas fa-gift text-4xl chosenText"></i>
+                <div ref="giftIcon" class="w-24 h-24 mx-auto mb-6 rounded-full bg-black flex items-center justify-center">
+                  <i class="fas fa-gift text-4xl text-white"></i>
                 </div>
                 
-                <div class="chosenBG rounded-lg p-4 mb-4">
-                  <p class="chosenText font-medium mb-2">Datos para transferencia:</p>
-                  <p class="chosenText text-sm mb-1">Banco: [Nombre del Banco]</p>
-                  <p class="chosenText text-sm">CBU: [Número de CBU]</p>
-                  <p class="chosenText text-sm">A nombre de: [Nombre]</p>
+                <div class="bg-black rounded-lg p-4 mb-4">
+                  <p class="text-white font-medium mb-2">Datos para transferencia:</p>
+                  <p class="text-sm text-white mb-1">Banco: [Nombre del Banco]</p>
+                  <p class="text-sm text-white">CBU: [Número de CBU]</p>
+                  <p class="text-sm text-white">A nombre de: [Nombre]</p>
                 </div>
                 
-                <p class="chosenText text-sm italic">
+                <p class="text-sm text-gray-500 italic">
                   * Muchas gracias por acompañarnos en este día tan especial
                 </p>
-              </div>
-            </div>
-          </div>
-          <div class="bg-white text-black w-full leading-none py-10">
-            <TestData2 />
-          </div>
-          <div class="w-full leading-none py-8 px-4 bg-white">
-            <div class="max-w-md mx-auto text-center">
-              <div class="w-full leading-none py-12 px-4 bg-white">
-                <div class="max-w-md mx-auto text-center">
-                  <div class="mb-6">
-                    <span class="inline-block w-16 h-px bg-gray-300 mb-2"></span>
-                    <h2 class="text-2xl font-serif tracking-wider text-black">¡Nos vemos pronto!</h2>
-                    <span class="inline-block w-16 h-px bg-gray-300 mt-2"></span>
-                  </div>
-                  
-                  <div class="mb-6">
-                    <p class="text-gray-700 mb-6">
-                      Con amor y gratitud, los esperamos para celebrar juntos este día tan especial.
-                    </p>
-                    
-                    <div class="mb-6">
-                      <p class="text-4xl font-serif mb-2">Renata & Lucas</p>
-                      <p class="text-sm text-gray-500">07.03.2026</p>
-                    </div>
-                    
-                    <p class="text-sm text-gray-500 italic">
-                      Gracias por ser parte de nuestra historia
-                    </p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
       
-      <section class="mt-2" v-if="false">
+      <section class="mt-2">
         <div class="test">
           <div class="bg-white w-full leading-none px-4">
             <div class="border-t border-black"></div>
@@ -350,7 +355,7 @@ body {
 }
 .content .section.hero {
   /* background-image: url('../assets/second.jpg'); */
-  /* background-image: url('../assets/white_paper_texture_old.avif'); */
+  background-image: url('../assets/white_paper_texture_old.avif');
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -454,5 +459,12 @@ body {
   100% { transform: translateY(-10px); }
 }
 
+.chosenBG {
+  @apply bg-black;
+}
+
+.liCal {
+  @apply flex flex-col items-center justify-center w-20 h-20 bg-black p-2 bg-gray-900;
+}
 
 </style>
