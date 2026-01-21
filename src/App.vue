@@ -56,7 +56,7 @@ import { RouterLink, RouterView } from 'vue-router';
     </nav>
 
     <!-- Main content -->
-    <main class="max-w-7xl mx-auto ">
+    <main class="mx-auto">
       <RouterView />
     </main>
   </div>

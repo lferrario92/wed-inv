@@ -40,9 +40,9 @@ body {
   /* background-image: url('assets/white_paper_texture.jpg'); */
   margin: 0;
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   min-width: 320px;
-  max-width: 500px;
   min-height: 100vh;
 }
 

@@ -208,10 +208,10 @@ watch(invitationCode, async (newCode) => {
      
       <!-- Guest form -->
       <form @submit.prevent="saveGuestUpdates" class="space-y-6">
-        <div v-for="(guest, index) in guestForms" :key="guest.id" class="border border-gray-200 rounded-lg p-4">
-          <div class="relative">
+        <div v-for="(guest, index) in guestForms" :key="guest.id" class="border border-gray-200 rounded-lg p-4 relative">
+          <div class="">
             <h3 class="text-2xl font-medium font-serif mb-2">{{ guest.name }}</h3>
-            <div v-if="saving" class="flex justify-center mb-2 items-center">
+            <div v-if="saving" class="absolute top-2 right-2 flex justify-center mb-2 items-center">
               <i class="fa-solid fa-spinner fa-spin-pulse"></i>
             </div>
           </div>
@@ -289,12 +289,12 @@ watch(invitationCode, async (newCode) => {
       </form>
     </div>
     <!-- Success message -->
-    <div v-if="success" class="my-4 p-4 bg-green-50 text-green-800 rounded-md">
+    <div v-if="success" class="my-1 p-4 bg-green-50 text-green-800 rounded-md absolute right-4 left-4">
       {{ success }}
     </div>
     
     <!-- Error message -->
-    <div v-if="error" class="my-4 p-4 bg-red-50 text-red-800 rounded-md">
+    <div v-if="error" class="my-1 p-4 bg-red-50 text-red-800 rounded-md absolute right-4 left-4">
       {{ error }}
     </div>
     
@@ -308,7 +308,7 @@ watch(invitationCode, async (newCode) => {
         </div>
         <div class="ml-3">
           <p class="text-sm text-blue-700">
-            Please provide an invitation code in the URL (e.g., <span class="font-mono">?code=ABC123</span>)
+            Falta el codigo de la invitacion en la URL (e.g., <span class="font-mono">?code=ABC123</span>)
           </p>
         </div>
       </div>

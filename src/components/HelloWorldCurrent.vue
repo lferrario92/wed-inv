@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import emblaCarouselVue from 'embla-carousel-vue'
 import Autoplay from 'embla-carousel-autoplay'
 import { supabase } from '../utils/supabase';
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import TestData2 from './TestData2.vue';
 
 const [emblaRef] = emblaCarouselVue({ loop: true }, [Autoplay()])
@@ -68,11 +68,11 @@ const addToCalendar = () => {
   const description = encodeURIComponent(`
 Estancia Santa Juana, Belén de Escobar, Provincia de Buenos Aires
 
+https://maps.app.goo.gl/i9QaHE2TDDj3Tq1QA
+
 ---
 
-- Ceremonia 16.00 hs
-- Recepcion 17.00 hs
-- Cena 21.00 hs
+- 16.00 hs
 
 ---
 
@@ -127,7 +127,7 @@ const sendSong = async () => {
     
     if (updateError) throw updateError;
     
-    songSuccess.value = '¡Canción guardada con éxito!';
+    songSuccess.value = '¡Canción agregada a la playlist!';
     
     // Clear success message after 3 seconds
     setTimeout(() => {
@@ -142,28 +142,55 @@ const sendSong = async () => {
   }
 }
 
+// Header animations
+const topDeco = ref(null);
+const headerContainer = ref(null);
+const bottomDeco = ref(null);
+
+onMounted(() => {
+  // Create a timeline for sequential animations
+  const tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+  
+  // Animate elements in sequence
+  tl.to(topDeco.value, { 
+    opacity: 1, 
+    duration: 1.2,
+    ease: 'sine.inOut'
+  })
+  .to(bottomDeco.value, { 
+    opacity: 1, 
+    duration: 1.5,
+    ease: 'sine.inOut'
+  }, '-=0.5') // Slight overlap with previous animation
+  .to(headerContainer.value, { 
+    opacity: 1, 
+    duration: 1.2,
+    ease: 'sine.inOut'
+  }, '-=0.7'); // Slight overlap with previous animation
+});
+
 </script>
 
 <template>
 	<div class="wrapper">
-	  <div class="intro">
+	  <div class="intro fixWidth">
       <!-- <div class="flex flex-col items-center names">
         <p class="transform -rotate-90 mt-10">Renata & Lucas</p>
       </div>
       <h1>Nuestra boda</h1> -->
       <div class="relative w-full min-h-screen">
-        <img src="../assets/top_deco.png" alt="Top Deco" class="absolute top-0 w-full">
-        <div class="absolute inset-0 flex items-start justify-center pt-[15%]">
+        <img ref="topDeco" src="../assets/top_deco.png" alt="Top Deco" class="absolute top-0 w-full opacity-0">
+        <div ref="headerContainer" class="absolute inset-0 flex items-start justify-center pt-[15%] opacity-0">
           <img src="../assets/header_center.png" alt="Header" class="max-w-full max-h-[70vh] object-contain">
         </div>
-        <img src="../assets/bottom_deco.png" alt="Bottom Deco" class="absolute bottom-0 w-full">
+        <img ref="bottomDeco" src="../assets/bottom_deco.png" alt="Bottom Deco" class="absolute bottom-0 w-full opacity-0">
       </div>
 	  </div>
 	  <div class="content">
 	    <section class="section hero"></section>
 	    <section class="">
 	      <div class="test">
-          <div class="chosenBG text-white p-4 w-full">
+          <div class="chosenBG text-white p-4 fixWidth">
             <p class="italic font-serif">Los invitamos a celebrar con nosotros</p>
             <ul class="flex gap-1 items-center justify-center mw-full">
               <li class="liCal chosenBG-over">
@@ -184,7 +211,7 @@ const sendSong = async () => {
               </li>
             </ul>
           </div>
-          <div class="bg-white text-black w-full leading-none pt-10 pb-10">
+          <div class="bg-white text-black fixWidth leading-none pt-10 pb-10">
             <div class="timeline-element-small flex flex-col gap-3 items-center px-4">
               <i class="text-4xl mb-2 fas fa-calendar-days chosenText"></i>
               <p class="text-lg font-bold font-serif chosenText">
@@ -195,10 +222,10 @@ const sendSong = async () => {
               <button class="w-full chosenBG" @click="addToCalendar">Agregar a tu calendario</button>
             </div>
           </div>
-          <div class="bg-white w-full leading-none px-4">
+          <div class="bg-white fixWidth leading-none px-4">
             <div class="border-t border-black"></div>
           </div>
-          <div class="bg-white text-black w-full leading-none py-10">
+          <div class="bg-white text-black fixWidth leading-none py-10">
             <div class="timeline-element-small flex flex-col gap-3 items-center px-4">
               <img src="../assets/santa_juana_green.png" alt="Santa Juana" class="w-auto h-12 mb-2 object-cover">
               <p class="chosenText font-bold mb-4 text-lg">
@@ -210,11 +237,11 @@ const sendSong = async () => {
               <button class="w-full chosenBG" @click="openMap">Como llegar</button>
             </div>
           </div>
-          <div class="bg-white w-full leading-none px-4">
+          <div class="bg-white fixWidth leading-none px-4">
             <div class="border-t border-black"></div>
           </div>
-	      	<div class="relative text-black w-full h-[50vh] leading-none pt-28 bg-white">
-            <img class="absolute top-0 w-full pointer-events-none" src="../assets/dress_flower_top.png" alt="">
+	      	<div class="relative text-black fixWidth h-[50vh] leading-none pt-28 bg-white">
+            <img class="absolute top-0 w-full pointer-events-none max-w-[24rem]" src="../assets/dress_flower_top.png" alt="">
             <div class="absolute top-[30%] inset-0 flex flex-col items-center justify-center px-4">
               <p class="chosenText font-bold mb-4 text-lg">Dress code</p>
               <p class="chosenText mb-8">Formal Summer Chic</p>
@@ -222,10 +249,10 @@ const sendSong = async () => {
               <p class="chosenText italic font-serif text-xs mb-2">¡Se los dejamos a la novia!</p>
               <button class="w-full chosenBG mt-2" @click="openDressCodeIdeas">Ver ideas</button>
             </div>
-          </div><div class="bg-white w-full leading-none px-4">
+          </div><div class="bg-white fixWidth leading-none px-4">
             <div class="border-t border-black"></div>
           </div>
-          <div class="bg-white text-black w-full leading-none py-10">
+          <div class="bg-white text-black fixWidth leading-none py-10">
             <div class="timeline-element-small flex flex-col gap-3 items-center px-4">
               <img src="../assets/dance_icon_green.png" alt="Dance" class="w-auto h-24 object-cover">
               <p class="chosenText font-bold mb-4 text-lg">
@@ -255,10 +282,10 @@ const sendSong = async () => {
               </div>
             </div>
           </div>
-          <div class="bg-white w-full leading-none px-4">
+          <div class="bg-white fixWidth leading-none px-4">
             <div class="border-t border-black"></div>
           </div>
-          <div class="bg-white text-black w-full leading-none pt-10 pb-10">
+          <div class="bg-white text-black fixWidth leading-none pt-10 pb-10">
             <div class="timeline-element-small flex flex-col gap-3 items-center px-4">
               <i class="text-4xl mb-2 fas fa-gift chosenText"></i>
               <p class="text-lg font-bold font-serif chosenText">
@@ -269,24 +296,24 @@ const sendSong = async () => {
               </span>
               <div class="w-full mx-auto mb-6 rounded chosenBG p-4">
                 <p class="chosenText font-bold mb-2">Datos para transferencia:</p>
-                <p class="chosenText text-sm mb-1">Banco: BBVA</p>
-                <p class="chosenText text-sm mb-1">Caja de Ahorro pesos N° 16-71301/1</p>
-                <p class="chosenText text-sm mb-1">CBU: 0170016940000007130117</p>
                 <p class="chosenText text-sm mb-1">Alias: MARCA.MADRE.CLASE</p>
-                <p class="chosenText text-sm mb-1">A nombre de: Paez Renata Maria</p>
+                <p class="chosenText text-sm mb-1">CBU: 0170016940000007130117</p>
+                <p class="chosenText text-sm mb-1">Titular: Paez Renata Maria</p>
+                <p class="chosenText text-sm mb-1">Caja de Ahorro pesos N° 16-71301/1</p>
+                <p class="chosenText text-sm mb-1">Banco: BBVA</p>
               </div> 
             </div>
           </div>
-          <div class="bg-white w-full leading-none px-4">
+          <div class="bg-white fixWidth leading-none px-4">
             <div class="border-t border-black"></div>
           </div>
-          <div class="bg-white text-black w-full leading-none py-10">
+          <div class="bg-white text-black fixWidth leading-none py-10">
             <TestData2 @writeSong="song = $event" />
           </div>
-          <div class="bg-white w-full leading-none px-4">
+          <div class="bg-white fixWidth leading-none px-4">
             <div class="border-t border-black"></div>
           </div>
-          <div class="w-full leading-none px-4 bg-white">
+          <div class="bg-white fixWidth leading-none px-4">
             <div class="max-w-md mx-auto text-center">
               <div class="w-full leading-none pt-12 px-4 bg-white">
                 <div class="max-w-md mx-auto text-center">
@@ -305,7 +332,7 @@ const sendSong = async () => {
                       <p class="chosenText text-sm text-gray-500">07.03.2026</p>
                     </div>
 
-                    <img class="absolute left-0 w-full bottom-0" src="../assets/bottom_deco.png" alt="">
+                    <img class="absolute left-0 right-0 max-w-[23rem] w-full bottom-0" src="../assets/bottom_deco.png" alt="">
                   </div>
                 </div>
               </div>
@@ -331,6 +358,11 @@ body {
   font-style: normal;
   font-family: "Chelsea Market", system-ui;
   font-size: 34px;
+}
+
+.fixWidth {
+	max-width: 31rem;
+  width: 100%;
 }
 
 .paper {
