@@ -3,7 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import emblaCarouselVue from 'embla-carousel-vue'
 import Autoplay from 'embla-carousel-autoplay'
-
+import { supabase } from '../utils/supabase';
 import { ref } from 'vue'
 import TestData2 from './TestData2.vue';
 
@@ -97,6 +97,51 @@ const openMap = () => {
   window.open(link, '_blank')
 }
 
+const openDressCodeIdeas = () => {
+  const link = 'https://photos.app.goo.gl/PcRmQGriVJebDsMH7'
+  window.open(link, '_blank')
+}
+
+const song = ref('');
+const isSaving = ref(false);
+const songSuccess = ref('');
+const songError = ref('');
+
+const sendSong = async () => {
+  if (isSaving.value) return;
+  if (!song.value.trim()) {
+    songError.value = 'Por favor ingresa una canción';
+    return;
+  }
+
+  try {
+    isSaving.value = true;
+    songError.value = '';
+    
+    const { error: updateError } = await supabase
+      .from('invitations')
+      .upsert({
+        id: localStorage.getItem('weddingInvitationId'),
+        songs: song.value
+      }, { onConflict: 'id' });
+    
+    if (updateError) throw updateError;
+    
+    songSuccess.value = '¡Canción guardada con éxito!';
+    
+    // Clear success message after 3 seconds
+    setTimeout(() => {
+      songSuccess.value = '';
+    }, 3000);
+    
+  } catch (error) {
+    console.error('Error al guardar la canción:', error);
+    songError.value = 'Error al guardar la canción. Por favor, inténtalo de nuevo.';
+  } finally {
+    isSaving.value = false;
+  }
+}
+
 </script>
 
 <template>
@@ -106,11 +151,12 @@ const openMap = () => {
         <p class="transform -rotate-90 mt-10">Renata & Lucas</p>
       </div>
       <h1>Nuestra boda</h1> -->
-      <div class="relative w-full">
-        <img src="../assets/cover_names.png" alt="Wedding Names" class="w-full max-w-100">
-        <img src="../assets/trans_left.png" alt="Decorative Left" class="absolute left-0 top-10 max-w-100">
-        <img src="../assets/trans_right.png" alt="Decorative Right" class="absolute right-0 top-10 max-w-100">
-        <h1>Nuestra boda</h1>
+      <div class="relative w-full min-h-screen">
+        <img src="../assets/top_deco.png" alt="Top Deco" class="absolute top-0 w-full">
+        <div class="absolute inset-0 flex items-start justify-center pt-[15%]">
+          <img src="../assets/header_center.png" alt="Header" class="max-w-full max-h-[70vh] object-contain">
+        </div>
+        <img src="../assets/bottom_deco.png" alt="Bottom Deco" class="absolute bottom-0 w-full">
       </div>
 	  </div>
 	  <div class="content">
@@ -118,13 +164,7 @@ const openMap = () => {
 	    <section class="">
 	      <div class="test">
           <div class="chosenBG text-white p-4 w-full">
-            <p>Los invitamos a celebrar con nosotros</p>
-            <p class="font-bold text-2xl">
-              7 DE MARZO DE 2026
-            </p>
-            <p class="m-4 italic text-lg">
-              Faltan...
-            </p>
+            <p class="italic font-serif">Los invitamos a celebrar con nosotros</p>
             <ul class="flex gap-1 items-center justify-center mw-full">
               <li class="liCal chosenBG-over">
                 <span class="text-xl" id="days"></span>
@@ -146,7 +186,12 @@ const openMap = () => {
           </div>
           <div class="bg-white text-black w-full leading-none pt-10 pb-10">
             <div class="timeline-element-small flex flex-col gap-3 items-center px-4">
-              <i class="text-2xl mb-2 fas fa-calendar-days chosenText"></i>
+              <i class="text-4xl mb-2 fas fa-calendar-days chosenText"></i>
+              <p class="text-lg font-bold font-serif chosenText">
+                7 de Marzo de 2026
+                <p class="chosenText">16:00 hs</p>
+              </p>
+              <span class="chosenText font-serif italic text-sm">¡Se putual para no perderte la ceremonia!</span>
               <button class="w-full chosenBG" @click="addToCalendar">Agregar a tu calendario</button>
             </div>
           </div>
@@ -155,123 +200,114 @@ const openMap = () => {
           </div>
           <div class="bg-white text-black w-full leading-none py-10">
             <div class="timeline-element-small flex flex-col gap-3 items-center px-4">
-              <i class="text-2xl mb-2 fas fa-map-marker-alt chosenText"></i>
+              <img src="../assets/santa_juana_green.png" alt="Santa Juana" class="w-auto h-12 mb-2 object-cover">
+              <p class="chosenText font-bold mb-4 text-lg">
+                Estancia Santa Juana
+              </p>
+              <p class="chosenText mb-6">
+                Sta. Teresita de Lesieux, Belén de Escobar, Provincia de Buenos Aires
+              </p>
               <button class="w-full chosenBG" @click="openMap">Como llegar</button>
             </div>
           </div>
           <div class="bg-white w-full leading-none px-4">
             <div class="border-t border-black"></div>
           </div>
-          <div class="bg-white w-full leading-none px-4">
-            <div class="border-t border-black"></div>
-          </div>
-	      	<div class="bg-white text-black w-full leading-none py-8">
-            <img src="../assets/dresscode.png" alt="">
-          </div>
-          <div class="bg-white w-full leading-none px-4">
-            <div class="border-t border-black"></div>
-          </div>
-          <div class="w-full leading-none py-8 px-4 bg-white">
-            <div class="max-w-md mx-auto text-center">
-              <div class="mb-6">
-                <span class="inline-block w-16 h-px bg-gray-300 mb-2"></span>
-                <h2 class="text-2xl font-serif tracking-wider chosenText">Regalos</h2>
-                <span class="inline-block w-16 h-px bg-gray-300 mt-2"></span>
-              </div>
-              
-              <div class="mb-6">
-                <p class="text-gray-700 mb-6">
-                  Su presencia es nuestro mejor regalo, pero si desean hacernos un obsequio, 
-                  agradeceremos su aporte para nuestro viaje de luna de miel.
-                </p>
-                
-                <div ref="giftIcon" class="w-24 h-24 mx-auto mb-6 rounded-full chosenBG flex items-center justify-center">
-                  <i class="fas fa-gift text-4xl chosenText"></i>
-                </div>
-                
-                <div class="chosenBG rounded-lg p-4 mb-4">
-                  <p class="chosenText font-medium mb-2">Datos para transferencia:</p>
-                  <p class="chosenText text-sm mb-1">Banco: [Nombre del Banco]</p>
-                  <p class="chosenText text-sm">CBU: [Número de CBU]</p>
-                  <p class="chosenText text-sm">A nombre de: [Nombre]</p>
-                </div>
-                
-                <p class="chosenText text-sm italic">
-                  * Muchas gracias por acompañarnos en este día tan especial
-                </p>
-              </div>
+	      	<div class="relative text-black w-full h-[50vh] leading-none pt-28 bg-white">
+            <img class="absolute top-0 w-full pointer-events-none" src="../assets/dress_flower_top.png" alt="">
+            <div class="absolute top-[30%] inset-0 flex flex-col items-center justify-center px-4">
+              <p class="chosenText font-bold mb-4 text-lg">Dress code</p>
+              <p class="chosenText mb-8">Formal Summer Chic</p>
+              <p class="chosenText mb-2 mt-2">No usar blanco ni beige</p>
+              <p class="chosenText italic font-serif text-xs mb-2">¡Se los dejamos a la novia!</p>
+              <button class="w-full chosenBG mt-2" @click="openDressCodeIdeas">Ver ideas</button>
             </div>
+          </div><div class="bg-white w-full leading-none px-4">
+            <div class="border-t border-black"></div>
           </div>
           <div class="bg-white text-black w-full leading-none py-10">
-            <TestData2 />
-          </div>
-          <div class="w-full leading-none py-8 px-4 bg-white">
-            <div class="max-w-md mx-auto text-center">
-              <div class="w-full leading-none py-12 px-4 bg-white">
-                <div class="max-w-md mx-auto text-center">
-                  <div class="mb-6">
-                    <span class="inline-block w-16 h-px bg-gray-300 mb-2"></span>
-                    <h2 class="text-2xl font-serif tracking-wider text-black">¡Nos vemos pronto!</h2>
-                    <span class="inline-block w-16 h-px bg-gray-300 mt-2"></span>
-                  </div>
-                  
-                  <div class="mb-6">
-                    <p class="text-gray-700 mb-6">
-                      Con amor y gratitud, los esperamos para celebrar juntos este día tan especial.
-                    </p>
-                    
-                    <div class="mb-6">
-                      <p class="text-4xl font-serif mb-2">Renata & Lucas</p>
-                      <p class="text-sm text-gray-500">07.03.2026</p>
-                    </div>
-                    
-                    <p class="text-sm text-gray-500 italic">
-                      Gracias por ser parte de nuestra historia
-                    </p>
-                  </div>
-                </div>
+            <div class="timeline-element-small flex flex-col gap-3 items-center px-4">
+              <img src="../assets/dance_icon_green.png" alt="Dance" class="w-auto h-24 object-cover">
+              <p class="chosenText font-bold mb-4 text-lg">
+                ¡Te queremos ver dándolo todo en la pista como Vincent y Mia!
+              </p>
+              <p class="chosenText mb-6">
+                ¿Qué canción no puede faltar?
+              </p>
+              <input v-model="song" type="text" placeholder="Completá acá" class="w-full chosenBG rounded p-2 placeholder-white/80">
+              <button
+                class="w-full chosenBG mt-2 disabled:opacity-50"
+                :disabled="isSaving"
+                @click="sendSong"
+              >
+                Enviar canción
+              </button>
+            </div>
+            <div>
+              <!-- Success message -->
+              <div v-if="songSuccess" class="my-4 p-4 bg-green-50 text-green-800 rounded-md">
+                {{ songSuccess }}
+              </div>
+              
+              <!-- Error message -->
+              <div v-if="songError" class="my-4 p-4 bg-red-50 text-red-800 rounded-md">
+                {{ songError }}
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      
-      <section class="mt-2" v-if="false">
-        <div class="test">
           <div class="bg-white w-full leading-none px-4">
             <div class="border-t border-black"></div>
           </div>
-          <div class="bg-white w-full leading-none py-8 px-4">
+          <div class="bg-white text-black w-full leading-none pt-10 pb-10">
+            <div class="timeline-element-small flex flex-col gap-3 items-center px-4">
+              <i class="text-4xl mb-2 fas fa-gift chosenText"></i>
+              <p class="text-lg font-bold font-serif chosenText">
+                Regalos
+              </p>
+              <span class="chosenText font-serif italic text-sm">
+                Tu presencia es nuestro mejor regalo, pero si querés hacernos un presente, agradeceremos tu aporte para nuestra luna de miel.
+              </span>
+              <div class="w-full mx-auto mb-6 rounded chosenBG p-4">
+                <p class="chosenText font-bold mb-2">Datos para transferencia:</p>
+                <p class="chosenText text-sm mb-1">Banco: BBVA</p>
+                <p class="chosenText text-sm mb-1">Caja de Ahorro pesos N° 16-71301/1</p>
+                <p class="chosenText text-sm mb-1">CBU: 0170016940000007130117</p>
+                <p class="chosenText text-sm mb-1">Alias: MARCA.MADRE.CLASE</p>
+                <p class="chosenText text-sm mb-1">A nombre de: Paez Renata Maria</p>
+              </div> 
+            </div>
+          </div>
+          <div class="bg-white w-full leading-none px-4">
+            <div class="border-t border-black"></div>
+          </div>
+          <div class="bg-white text-black w-full leading-none py-10">
+            <TestData2 @writeSong="song = $event" />
+          </div>
+          <div class="bg-white w-full leading-none px-4">
+            <div class="border-t border-black"></div>
+          </div>
+          <div class="w-full leading-none px-4 bg-white">
             <div class="max-w-md mx-auto text-center">
-              <div class="mb-6">
-                <span class="inline-block w-16 h-px bg-gray-300 mb-2"></span>
-                <h2 class="text-2xl font-serif tracking-wider text-black">Confirmar Asistencia</h2>
-                <span class="inline-block w-16 h-px bg-gray-300 mt-2"></span>
-              </div>
-              
-              <div class="mb-6">
-                <p class="text-gray-700 mb-6">
-                  Por favor, confirma tu asistencia antes del 1 de Febrero de 2026
-                </p>
-                
-                <p class="text-sm text-gray-600 mb-6">
-                  <span class="block text-lg font-medium mb-1">Invitados confirmados</span>
-                  <span class="text-4xl font-serif">2</span>
-                  <span class="block text-sm text-gray-500 mt-1">de 2</span>
-                </p>
-                
-                <a 
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSfNTdNtGRQsxV96JBtiyA3JJ59cenb0G17LAu4LQtn3oJTcUA/viewform?usp=header" 
-                  target="_blank"
-                  class="inline-block bg-black text-white px-8 py-3 rounded-full hover:bg-gray-800 transition-colors duration-300 font-medium"
-                >
-                  Confirmar Asistencia
-                </a>
-                
-                <p class="text-sm text-gray-500 mt-6">
-                  ¿Tienes alguna pregunta?<br>
-                  <a href="mailto:renataylucas@boda.com" class="text-gray-700 underline">renataylucas@boda.com</a>
-                </p>
+              <div class="w-full leading-none pt-12 px-4 bg-white">
+                <div class="max-w-md mx-auto text-center">
+                  <div class="pb-[32vh] relative">
+                    
+                    <p class="chosenText text-sm font-serif italic mb-2">
+                      Gracias por ser parte de nuestra historia
+                    </p>
+                    
+                    <p class="chosenText text-sm font-serif italic mb-2">
+                      ¡Nos vemos pronto!
+                    </p>
+
+                    <div class="mt-6">
+                      <p class="text-lg font-serif chosenText mb-2">Renata & Lucas</p>
+                      <p class="chosenText text-sm text-gray-500">07.03.2026</p>
+                    </div>
+
+                    <img class="absolute left-0 w-full bottom-0" src="../assets/bottom_deco.png" alt="">
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -284,6 +320,7 @@ const openMap = () => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Beth+Ellen&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Beth+Ellen&family=Chelsea+Market&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
 
 * {
   box-sizing: border-box;
@@ -310,6 +347,7 @@ body {
 }
 .intro {
   position: absolute;
+  background-color: white;
   left: 0%;
   top: 0%;
   right: auto;

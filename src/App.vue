@@ -87,24 +87,25 @@ html {
 
 
 .chosenBG {
-  @apply bg-rose-50 text-rose-900;
+  @apply text-white;
+  background-color: #707f62;
 }
 
 
 .chosenText {
-  @apply text-rose-900;
+  color: #707f62;
 }
 
 .chosenBG p {
-  @apply text-rose-900;
+  color: #fff;
 }
 
 .chosenBG-over {
-  @apply bg-rose-200;
+  background-color: #5d6b50;
 }
 
 .chosenBG-over span {
-  @apply text-rose-900;
+  color: #fff;
 }
 
 .liCal {

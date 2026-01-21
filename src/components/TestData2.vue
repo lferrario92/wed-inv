@@ -10,25 +10,29 @@ const error = ref('');
 const success = ref('');
 const invitation = ref(null);
 const guestForms = ref([]);
+const emit = defineEmits(['writeSong']);
 
-// Get code from query parameter
+// Get code from query parameter or localStorage
 const invitationCode = computed(() => {
-  return route.query.code?.toUpperCase() || '';
+  // First try to get from URL query parameters
+  const codeFromUrl = route.query.code?.toUpperCase();
+  if (codeFromUrl) {
+    // Save to localStorage for future use
+    localStorage.setItem('weddingInvitationCode', codeFromUrl);
+    return codeFromUrl;
+  }
+  
+  // If not in URL, try to get from localStorage
+  const savedCode = localStorage.getItem('weddingInvitationCode');
+  return savedCode || '';
 });
 
 // Menu options
 const menuOptions = [
   { value: 'regular', label: 'Regular' },
   { value: 'vegetarian', label: 'Vegetariano' },
-  { value: 'celiac', label: 'Sin Gluten' },
-  { value: 'none_selected', label: 'Sin especificar' }
+  { value: 'celiac', label: 'Sin Gluten' }
 ];
-
-// Format menu choice for display
-const formatMenuChoice = (choice) => {
-  const option = menuOptions.find(opt => opt.value === choice);
-  return option ? option.label : choice;
-};
 
 // Initialize guest forms with current data
 const initializeGuestForms = (guests) => {
@@ -36,7 +40,7 @@ const initializeGuestForms = (guests) => {
     id: guest.id,
     name: guest.guest_name,
     menu_choice: guest.menu_choice || 'none_selected',
-    is_attending: guest.is_attending ?? true, // Default to true if null/undefined
+    is_attending: guest.is_attending, // Default to true if null/undefined
     notes: guest.notes || '',
     original: { ...guest } // Keep original values for comparison
   }));
@@ -81,7 +85,7 @@ const saveGuestUpdates = async () => {
       original: { ...form }
     }));
     
-    success.value = '¡Preferencias actualizadas correctamente!';
+    success.value = '¡Datos actualizados correctamente!';
     
     // Clear success message after 5 seconds
     setTimeout(() => {
@@ -90,7 +94,7 @@ const saveGuestUpdates = async () => {
     
   } catch (err) {
     console.error('Error updating guests:', err);
-    error.value = 'Error al actualizar las preferencias. Por favor, inténtalo de nuevo.';
+    error.value = 'Error al actualizar los datos. Por favor, inténtalo de nuevo.';
   } finally {
     saving.value = false;
   }
@@ -135,6 +139,9 @@ const fetchInvitationByCode = async (code) => {
       if (invitationData.guests && invitationData.guests.length > 0) {
         guestForms.value = initializeGuestForms(invitationData.guests);
       }
+      if (invitation.value.songs) {
+        emit('writeSong', invitation.value.songs);
+      }
     } else {
       invitation.value = null;
       guestForms.value = [];
@@ -154,8 +161,10 @@ const fetchInvitationByCode = async (code) => {
 watch(invitationCode, async (newCode) => {
   if (newCode) {
     await fetchInvitationByCode(newCode);
+    localStorage.setItem('weddingInvitationId', invitation.value.id);
   } else {
     invitation.value = null;
+    localStorage.removeItem('weddingInvitationId')
   }
 }, { immediate: true });
 
@@ -164,23 +173,18 @@ watch(invitationCode, async (newCode) => {
 </script>
 
 <template>
-  <div class="container mx-auto p-4 max-w-3xl">
-    <h1 class="text-2xl font-bold mb-6 chosenText">Confirmación de asistencia</h1>
-    
-    <!-- Success message -->
-    <div v-if="success" class="mt-4 p-4 bg-green-50 text-green-800 rounded-md">
-      {{ success }}
-    </div>
-    
-    <!-- Error message -->
-    <div v-if="error" class="mt-4 p-4 bg-red-50 text-red-800 rounded-md">
-      {{ error }}
-    </div>
-    
+  <div class="container mx-auto p-4 max-w-3xl relative pt-[20%]">
+    <img class="absolute -top-[5%] right-0 w-full pointer-events-none" src="../assets/confirm_flower_2.png" alt="">
+    <h1 class="text-2xl font-bold mb-6 chosenText">Confirmación <br> de asistencia</h1>
+    <p class="chosenText font-serif italic text-sm mb-2">
+      Tenes tiempo de confirmar <br> hasta el 3 de Febrero de 2026.
+    </p>
+    <p class="chosenText font-serif italic text-sm mb-4">¡No nos hagas renegar!</p>
+
     <!-- Loading state -->
-    <div v-if="loading && !invitation" class="text-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-      <p v-if="loading" class="text-gray-600">Cargando detalles de la invitación...</p>
+    <div v-if="loading || !invitation" class="text-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-l-2 border-[#5d6b50] mx-auto"></div>
+      <p v-if="loading" class="chosenText mt-4">Cargando detalles de la invitación...</p>
     </div>
     
     <!-- Invitation not found -->
@@ -200,64 +204,69 @@ watch(invitationCode, async (newCode) => {
     </div>
     
     <!-- Invitation details -->
-    <div v-if="invitation" class="bg-white p-6 rounded-lg shadow">
-      <div class="mb-6">
-        <h2 class="text-xl font-semibold text-gray-900 mb-4 chosenText">Detalles de la invitación</h2>
-        <p class="text-gray-600">Código de invitación: <span class="font-mono">{{ invitation.code }}</span></p>
-      </div>
-      
+    <div v-if="invitation" class="chosenBG text-white p-6 rounded-lg shadow">
+     
       <!-- Guest form -->
       <form @submit.prevent="saveGuestUpdates" class="space-y-6">
         <div v-for="(guest, index) in guestForms" :key="guest.id" class="border border-gray-200 rounded-lg p-4">
-          <h3 class="text-lg font-medium text-gray-900 mb-3">{{ guest.name }}</h3>
+          <div class="relative">
+            <h3 class="text-2xl font-medium font-serif mb-2">{{ guest.name }}</h3>
+            <div v-if="saving" class="flex justify-center mb-2 items-center">
+              <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+            </div>
+          </div>
           
-          <!-- Attendance Toggle -->
+          <!-- Attendance Radio Buttons -->
           <div class="mb-4">
-            <label class="flex flex-col gap-2 items-center cursor-pointer">
-              <div class="relative">
-                <input type="checkbox" v-model="guest.is_attending" class="sr-only">
-                <div v-if="saving" class="absolute left-full ml-2 top-1/2 transform -translate-y-1/2">
-                  <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-500"></div>
-                </div>
-                <div class="block bg-gray-300 w-14 h-8 rounded-full"></div>
-                <div 
-                  class="absolute left-1 top-1 w-6 h-6 rounded-full transition transform"
-                  :class="{
-                    'translate-x-6 bg-green-500': guest.is_attending,
-                    'bg-red-500': !guest.is_attending,
-                    'bg-gray-500': saving
-                  }"
-                ></div>
-              </div>
-              <div class="text-gray-700 font-medium">
-                {{ guest.is_attending ? 'Asistirá' : 'No asistirá' }}
-              </div>
-            </label>
+            <div class="flex justify-center gap-6">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input 
+                  type="radio" 
+                  v-model="guest.is_attending" 
+                  :value="true" 
+                  class="form-radio text-green-500 bg-white"
+                  :disabled="saving"
+                >
+                <span class="font-medium">Asisto</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input 
+                  type="radio" 
+                  v-model="guest.is_attending" 
+                  :value="false" 
+                  class="form-radio text-red-500 bg-white"
+                  :disabled="saving"
+                >
+                <span class="font-medium">No asisto</span>
+              </label>
+            </div>
           </div>
 
           <div class="mb-4" :class="{ 'opacity-50': !guest.is_attending }">
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block text-sm font-medium mb-1">
               Preferencia de menú
             </label>
             <select 
               v-model="guest.menu_choice" 
               :disabled="!guest.is_attending || saving"
-              class="mt-1 block w-full pl-2 pr-2 py-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              class="mt-1 block w-full pl-2 pr-2 py-2 chosenText text-base border border-gray-300 focus:outline-none rounded-md bg-white"
+              required
             >
+              <option value="" disabled selected>Seleccionar opción</option>
               <option v-for="option in menuOptions" :key="option.value" :value="option.value">
                 {{ option.label }}
               </option>
             </select>
           </div>
 
-          <div class="mb-4">
+          <div class="mb-4" v-if="false">
             <label class="block text-sm font-medium text-gray-700 mb-1">
               Notas (alergias, pedidos especiales, etc.)
             </label>
             <textarea
               v-model="guest.notes"
               :disabled="!guest.is_attending"
-              class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:placeholder-gray-400 dark:focus:ring-indigo-500 dark:focus:border-indigo-500"
+              class="mt-1 p-2 block w-full rounded-md border border-gray-300 shadow-sm chosenText"
               rows="2"
               placeholder="¿Alguna nota o pedido especial?"
             ></textarea>
@@ -268,16 +277,25 @@ watch(invitationCode, async (newCode) => {
         <span v-if="hasChanges"  class="inline-flex items-center py-1 px-2 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
           Cambios sin guardar
         </span>
-        <div class="pt-2 flex justify-end">
+        <div class="pt-2 flex justify-end" v-if="false">
           <button
             type="submit"
             :disabled="!hasChanges || saving"
-            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed chosenBG"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed bg-white chosenText"
           >
             {{ saving ? 'Guardando...' : 'Guardar Cambios' }}
           </button>
         </div>
       </form>
+    </div>
+    <!-- Success message -->
+    <div v-if="success" class="my-4 p-4 bg-green-50 text-green-800 rounded-md">
+      {{ success }}
+    </div>
+    
+    <!-- Error message -->
+    <div v-if="error" class="my-4 p-4 bg-red-50 text-red-800 rounded-md">
+      {{ error }}
     </div>
     
     <!-- No code provided message -->
