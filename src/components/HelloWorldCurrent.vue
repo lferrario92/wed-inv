@@ -222,7 +222,7 @@ const openVideo = () => {
                 7 de Marzo de 2026
                 <p class="chosenText">16:00 hs</p>
               </p>
-              <span class="chosenText font-serif italic text-sm">¡Se putual para no perderte la ceremonia!</span>
+              <span class="chosenText font-serif italic text-sm">¡Sé puntual para no perderte la ceremonia!</span>
               <button class="w-full chosenBG" @click="addToCalendar">Agregar a tu calendario</button>
             </div>
           </div>
