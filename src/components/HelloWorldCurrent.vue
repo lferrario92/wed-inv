@@ -169,6 +169,10 @@ onMounted(() => {
   }, '-=0.7'); // Slight overlap with previous animation
 });
 
+const openVideo = () => {
+  const videoUrl = new URL('../assets/save_date.mp4', import.meta.url).href;
+  window.open(videoUrl, '_blank');
+}
 </script>
 
 <template>
@@ -309,6 +313,24 @@ onMounted(() => {
           </div>
           <div class="bg-white text-black fixWidth leading-none py-10">
             <TestData2 @writeSong="song = $event" />
+          </div>
+          <div class="bg-white fixWidth leading-none px-4">
+            <div class="border-t border-black"></div>
+          </div>
+          <div class="bg-white text-black fixWidth leading-none pt-10 pb-10">
+            <div class="timeline-element-small flex flex-col gap-3 items-center px-4">
+              <i class="text-4xl mb-2 fas fa-exclamation-triangle chosenText"></i>
+              <p class="text-lg font-bold font-serif chosenText">
+                Fe de erratas
+              </p>
+              <span class="chosenText font-serif italic text-sm">
+                Hola! Aca el novio, tengo noticias sobre nuestra boda. <br>
+                La noticia es que me equivoqué y mande mal el video para reservar la fecha... Lo bueno es que la fecha está bien!!
+<br/>
+                Asique, acá les dejo el video correcto.
+              </span>
+              <button class="w-full chosenBG mt-2" @click="openVideo">Ver save the date</button>
+            </div>
           </div>
           <div class="bg-white fixWidth leading-none px-4">
             <div class="border-t border-black"></div>
