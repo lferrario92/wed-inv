@@ -299,12 +299,20 @@ const openVideo = () => {
                 Tu presencia es nuestro mejor regalo, pero si querés hacernos un presente, agradeceremos tu aporte para nuestra luna de miel.
               </span>
               <div class="w-full mx-auto mb-6 rounded chosenBG p-4">
-                <p class="chosenText font-bold mb-2">Datos para transferencia:</p>
+                <p class="chosenText font-bold mb-2">Datos para transferencia (en pesos):</p>
                 <p class="chosenText text-sm mb-1">Alias: MARCA.MADRE.CLASE</p>
                 <p class="chosenText text-sm mb-1">CBU: 0170016940000007130117</p>
                 <p class="chosenText text-sm mb-1">Titular: Paez Renata Maria</p>
                 <p class="chosenText text-sm mb-1">Caja de Ahorro pesos N° 16-71301/1</p>
                 <p class="chosenText text-sm mb-1">Banco: BBVA</p>
+              </div> 
+              <div class="w-full mx-auto mb-6 rounded chosenBG p-4">
+                <p class="chosenText font-bold mb-2">Datos para transferencia (en dólares):</p>
+                <p class="chosenText text-sm mb-1">Alias: BLUSA.MARCO.ROCIO</p>
+                <p class="chosenText text-sm mb-1">CBU: 0070019131004007609026</p>
+                <p class="chosenText text-sm mb-1">Titular: Ferrario Lucas</p>
+                <p class="chosenText text-sm mb-1">Caja de Ahorro U$S 4007609-0 019-2</p>
+                <p class="chosenText text-sm mb-1">Banco: Galicia</p>
               </div> 
             </div>
           </div>
